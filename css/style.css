@@ -1,0 +1,44 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.body{
+    background: linear-gradient( rgba(18,102,103,1) 0%, rgba(15,19,105,1) 100%);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: calc(100vh - 20px);
+}
+.container{
+    margin: 0 auto;
+    max-width: 1440px;
+    max-height: 720px;
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+.title{
+    width: 30vw;
+    padding-top: 20px;
+}
+.canvas{
+    width: 80vw;
+    min-width: 500px;
+    height: 40vw;
+    min-height: 250px;
+    background: linear-gradient(rgba(34,193,195,1) 0%, rgba(35,44,247,1) 100%);
+    border-radius: 20px;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.1);
+}
+.scoreboard{
+    width: 100%;
+    display: flex;
+    margin: 20px 0;
+    padding: 0 20px;
+    justify-content: space-between;
+    font-size: 1.5vw;
+}
