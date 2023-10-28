@@ -1,4 +1,4 @@
-*{
+*{  
     box-sizing: border-box;
     margin: 0;
     color: white;
@@ -25,14 +25,16 @@
     width: 30vw;
     padding-top: 20px;
 }
-.canvas{
+.visor{
     width: 80vw;
     min-width: 500px;
     height: 40vw;
     min-height: 250px;
-    background: linear-gradient(rgba(34,193,195,1) 0%, rgba(35,44,247,1) 100%);
     border-radius: 20px;
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    background: linear-gradient(rgba(34,193,195,1) 0%, rgba(35,44,247,1) 100%);
+    position: relative;
 }
 .scoreboard{
     width: 100%;
@@ -41,4 +43,11 @@
     padding: 0 20px;
     justify-content: space-between;
     font-size: 1.5vw;
+}
+.green-dragon{
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 92%;
+    top: 50%;
+    width: 15vw;
 }
