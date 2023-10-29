@@ -22,9 +22,27 @@
     align-items: center;
 }
 .title{
+    position: relative;
     width: 30vw;
     padding-top: 20px;
+    animation-name: playgame;
+    animation-duration: 5s;
+    animation-fill-mode: forwards;
+    z-index: 1;
 }
+
+@keyframes playgame{
+    0%{
+        transform: scale(2) translateY(150%);
+    }
+    30%{
+        transform: scale(2) translateY(150%);
+    }
+    100%{
+        transform: scale(1) translateY(0);
+    }
+}
+
 .visor{
     width: 80vw;
     max-width: 1152px;
@@ -46,7 +64,7 @@
     justify-content: space-between;
     font-size: 1.5vw;
 }
-.green-dragon{
+.green{
     position: absolute;
     transform: translate(-50%, -50%);
     left: 92%;
@@ -60,4 +78,14 @@
     width: 5vw;
     max-width: 72px;
     opacity: 0.7;
+    animation-name: firestart;
+    animation-duration: 2s;
+}
+@keyframes firestart{
+    from{
+        transform: scaleY(0.3) translate(-50%, -50%);
+    }
+    to{
+        transform: scaleY(1) translate(-50%, -50%);
+    }
 }
