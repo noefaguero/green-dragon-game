@@ -90,12 +90,17 @@
 .black{
     position: absolute;
     transform: translate(-50%, -50%);
-    width: 15vw;
-    left: 92%;
-    top: 50%;
-    max-width: 216px;
+    width: 10vw;
+    max-width: 144px;
 }
 
+.red{
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 20vw;
+    max-width: 288px;
+}
+  
 .fire{
     position: absolute;
     transform: translate(-50%, -50%);

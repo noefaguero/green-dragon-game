@@ -1,8 +1,10 @@
 
 const visor = document.getElementById("visor")
 const container = document.getElementById("container")
+const points = document.getElementById("points")
+// reference of the green dragon
 let green
-let pos
+let stylesheet
 
 //////////////////////////// FUNCTIONS //////////////////////////////
 
@@ -13,11 +15,13 @@ const createDragon = (color) => {
     dragon.setAttribute("class", color)
     dragon.setAttribute("src", `assets/images/${color}.png`)
 
-    if(color == "black"){
-        // set initial positions 
-        let posY = Math.random()*visor.clientHeight
+    if(color != "green"){
+        // set the initial positions 
+        let posY = Math.round(Math.random()*visor.clientHeight)
         dragon.style.top = posY + "px"
         dragon.style.left = "0px"
+        // set the initial vertical direction
+        dragon.classList.add("isgoingup")
     }
 
     visor.append(dragon)
@@ -40,22 +44,22 @@ const breatheFire = (dragon) => {
         fire.style.top = dragon.style.top
         fire.style.left = dragon.style.left
     } else if (direction == -1) {
-        fire.style.top = (parseInt(pos.top) - 10) + "px"
-        fire.style.left = (parseInt(pos.left) - 100) + "px"
+        fire.style.top = (parseInt(stylesheet.top) - 10) + "px"
+        fire.style.left = (parseInt(stylesheet.left) - 100) + "px"
     }
     visor.append(fire)
     // move fire 1px for each 1ms
     setInterval(() => moveFire(direction,fire), 1)
 }
 
-const moveFire = (direction, object) => {
+const moveFire = (direction, dragon) => {
     
-    let position = parseInt(object.style.left)
+    let position = parseInt(dragon.style.left)
 
-    if ( position > (0 - object.clientWidth/2) && position < (visor.clientWidth - object.clientWidth/2)) {
-        object.style.left = (position + direction) + "px"
+    if ( position > -dragon.clientWidth && position < (visor.clientWidth + dragon.clientWidth)) {
+        dragon.style.left = (position + 5 * direction) + "px"
     } else {
-        object.remove()
+        dragon.remove()
     }
 }
 
@@ -74,22 +78,54 @@ const moveGreenDragon = (event) => {
     }
 }
 
-////// ENEMIES FUNCTIONS
+////// ENEMY FUNCTIONS
 
-const moveEnemies = (object) => {
-    let position = parseInt(object.style.left)
-    
-    if ( position < (visor.clientWidth - object.clientWidth/2)) {
-        object.style.left = (parseInt(object.style.left) + 1) + "px"
+const moveEnemy = (dragon) => {
+    let positionX = parseInt(dragon.style.left)
+    let positionY = parseInt(dragon.style.top)
+
+    // horizontal movement  
+    if ( positionX < (visor.clientWidth + dragon.clientWidth)) {
+        dragon.style.left = (parseInt(dragon.style.left) + 1) + "px"
     } else {
-        object.remove()
+        dragon.remove()
+    }
+
+    // vertical movement
+    if (positionY > 0 && positionY < visor.clientHeight) {
+        if (dragon.classList.contains("isgoingup")) {
+            dragon.style.top = (positionY - 1) + "px"
+        } else {
+            dragon.style.top = (positionY + 1) + "px"
+        }
+    } else if (positionY == 0) {
+        dragon.classList.remove("isgoingup")
+        dragon.style.top = (positionY + 1) + "px"
+    } else if (positionY == visor.clientHeight) {
+        dragon.classList.add("isgoingup")
+        dragon.style.top = (positionY - 1) + "px"
     }
 }
 
-const sendEnemies = (object) => {
-    // move enemies 1px for each 10ms
-    setInterval(() => moveEnemies(object), 10)
+const sendEnemy = (dragon) => {
+    // move enemy 1px for each 10ms
+    setInterval(() => moveEnemy(dragon), 10)
+}
 
+
+///// FUNTIONS TO THE MANAGEMENT OF SCORE AND LEVELS
+
+const setIntervalLevel = () => {
+    let score = parseInt(points.textContent)
+    let interval
+    if (score < 100) {
+        interval = 5000
+    } else if (score >= 100 && score < 200){
+        interval = 3000
+    } else if (score >= 200 && score < 300){
+        interval = 1000
+    }
+    return interval
 }
 
 
@@ -100,10 +136,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // get the reference of green dragon
     green = document.querySelector(".green")
     // read the green dragon style
-    pos =  window.getComputedStyle(green)
-    
-    // send enemies for each 1000-10000ms
-    setInterval(() => sendEnemies(createDragon("black")), Math.random()*9000+1000)
+    stylesheet =  window.getComputedStyle(green)
+    // send enemy for each 3s
+    setInterval(() => sendEnemy(createDragon("black")), setIntervalLevel())
 })
 visor.addEventListener("mousemove", (event) => moveGreenDragon(event))
 visor.addEventListener("click", () => breatheFire(green))
