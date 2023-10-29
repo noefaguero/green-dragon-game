@@ -112,6 +112,15 @@ const sendEnemy = (dragon) => {
     setInterval(() => moveEnemy(dragon), 10)
 }
 
+const alternateEnemy = () => {
+    // 1 in 5 enemies sent is a red dragon
+    let num = Math.ceil(Math.random()*5)
+    if (num != 1) {
+        return "black"
+    } else {
+        return "red"
+    }
+}
 
 ///// FUNTIONS TO THE MANAGEMENT OF SCORE AND LEVELS
 
@@ -138,7 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // read the green dragon style
     stylesheet =  window.getComputedStyle(green)
     // send enemy for each 3s
-    setInterval(() => sendEnemy(createDragon("black")), setIntervalLevel())
+    setInterval(() => sendEnemy(createDragon(alternateEnemy())), setIntervalLevel())
 })
 visor.addEventListener("mousemove", (event) => moveGreenDragon(event))
 visor.addEventListener("click", () => breatheFire(green))
