@@ -67,21 +67,45 @@
 .green{
     position: absolute;
     transform: translate(-50%, -50%);
+    width: 15vw;
     left: 92%;
     top: 50%;
+    max-width: 216px;
+    animation-name: startgreen;
+    animation-duration: 2s;
+    animation-delay: 2s;
+    animation-fill-mode: backwards;
+}
+@keyframes startgreen{
+    from{
+        left: 120%;
+        top: 120%;
+    }
+    to{
+        left: 92%;
+        top: 50%;
+    }
+}
+
+.black{
+    position: absolute;
+    transform: translate(-50%, -50%);
     width: 15vw;
+    left: 92%;
+    top: 50%;
     max-width: 216px;
 }
+
 .fire{
     position: absolute;
     transform: translate(-50%, -50%);
     width: 5vw;
     max-width: 72px;
     opacity: 0.7;
-    animation-name: firestart;
+    animation-name: startfire;
     animation-duration: 2s;
 }
-@keyframes firestart{
+@keyframes startfire{
     from{
         transform: scaleY(0.3) translate(-50%, -50%);
     }
