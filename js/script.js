@@ -21,7 +21,7 @@ const createDragon = (color) => {
         dragon.style.top = posY + "px"
         dragon.style.left = "0px"
         // set the initial vertical direction
-        dragon.classList.add("isgoingup")
+        dragon.classList.add("isgoingup","enemy")
     }
 
     visor.append(dragon)
@@ -48,19 +48,56 @@ const breatheFire = (dragon) => {
         fire.style.left = (parseInt(stylesheet.left) - 100) + "px"
     }
     visor.append(fire)
+
     // move fire 1px for each 1ms
-    setInterval(() => moveFire(direction,fire), 1)
+    const fireMovementInterval = () => 
+        setInterval(() => {
+            if (moveFire(fire)) {
+                let position = parseInt(fire.style.left)
+                fire.style.left = (position + 5 * direction) + "px"
+            } else {
+                clearInterval(fireMovementInterval)
+                fire.remove() 
+            }
+        }, 1)
+    fireMovementInterval()
+
+    const impactDetectionInterval = () => 
+        setInterval(() => {
+            if (moveFire(fire)) {
+                detectImpact(fire)
+            } else {
+                clearInterval(impactDetectionInterval)
+            }
+        }, 100)
+    impactDetectionInterval()
+    
 }
 
-const moveFire = (direction, dragon) => {
-    
-    let position = parseInt(dragon.style.left)
+const moveFire = (fire) => {
+    let position = parseInt(fire.style.left)
 
-    if ( position > -dragon.clientWidth && position < (visor.clientWidth + dragon.clientWidth)) {
-        dragon.style.left = (position + 5 * direction) + "px"
+    if ( position > -fire.clientWidth && position < (visor.clientWidth + fire.clientWidth)) {
+        return true //move
     } else {
-        dragon.remove()
+        return false //stop, fire is out of visor
     }
+}
+
+
+const detectImpact = (fire) => {
+    let enemies = visor.querySelectorAll(".enemy")
+    enemies.forEach(enemy => {
+        if (
+            parseInt(fire.style.top) + 50 > parseInt(enemy.style.top) &&
+            parseInt(fire.style.top) - 50 < parseInt(enemy.style.top) &&
+            parseInt(fire.style.left) + 50 > parseInt(enemy.style.left) &&
+            parseInt(fire.style.left) - 50 < parseInt(enemy.style.left)
+        ) {
+            enemy.remove()
+            fire.remove()
+        }
+    })
 }
 
 
@@ -122,7 +159,9 @@ const alternateEnemy = () => {
     }
 }
 
-///// FUNTIONS TO THE MANAGEMENT OF SCORE AND LEVELS
+
+
+///// FUNCTIONS TO THE MANAGEMENT OF SCORE AND LEVELS
 
 const setIntervalLevel = () => {
     let score = parseInt(points.textContent)
