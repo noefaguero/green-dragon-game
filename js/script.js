@@ -2,9 +2,11 @@
 const visor = document.getElementById("visor")
 const container = document.getElementById("container")
 const points = document.getElementById("points")
-// reference of the green dragon
+// reference of the green dragon (after the green dragon is created)
 let green
+// reference of the green dragon stylesheet
 let stylesheet
+let sendEnemy
 
 //////////////////////////// FUNCTIONS //////////////////////////////
 
@@ -27,6 +29,39 @@ const createDragon = (color) => {
     visor.append(dragon)
 
     return dragon
+}
+
+const moveFire = (fire) => {
+    let position = parseInt(fire.style.left)
+
+    if ( position > -fire.clientWidth && position < (visor.clientWidth + fire.clientWidth)) {
+        return true //move
+    } else {
+        return false //stop, fire is out of visor
+    }
+}
+
+
+const detectImpact = (fire) => {
+    let enemies = visor.querySelectorAll(".enemy")
+    enemies.forEach(enemy => {
+        if (
+            parseInt(fire.style.top) + 50 > parseInt(enemy.style.top) &&
+            parseInt(fire.style.top) - 50 < parseInt(enemy.style.top) &&
+            parseInt(fire.style.left) + 50 > parseInt(enemy.style.left) &&
+            parseInt(fire.style.left) - 50 < parseInt(enemy.style.left)
+        ) {
+            if (!enemy.classList.contains("green")) {
+                enemy.remove() 
+                // increase the score
+                if (enemy.classList.contains("black")) {
+                    updateScore(10)
+                } else if (enemy.classList.contains("red")) {
+                    updateScore(30)
+                }
+            }
+        }
+    })
 }
 
 const breatheFire = (dragon) => {
@@ -74,42 +109,17 @@ const breatheFire = (dragon) => {
     
 }
 
-const moveFire = (fire) => {
-    let position = parseInt(fire.style.left)
-
-    if ( position > -fire.clientWidth && position < (visor.clientWidth + fire.clientWidth)) {
-        return true //move
-    } else {
-        return false //stop, fire is out of visor
-    }
-}
-
-
-const detectImpact = (fire) => {
-    let enemies = visor.querySelectorAll(".enemy")
-    enemies.forEach(enemy => {
-        if (
-            parseInt(fire.style.top) + 50 > parseInt(enemy.style.top) &&
-            parseInt(fire.style.top) - 50 < parseInt(enemy.style.top) &&
-            parseInt(fire.style.left) + 50 > parseInt(enemy.style.left) &&
-            parseInt(fire.style.left) - 50 < parseInt(enemy.style.left)
-        ) {
-            enemy.remove()
-            fire.remove()
-        }
-    })
-}
-
-
 ////// GREEN DRAGON FUNCTIONS
 
 const moveGreenDragon = (event) => {
     if(event.target.tagName === "IMG"){
+        let half = Math.round(event.target.clientHeight/2)
         if (event.target.classList.contains("green")) {
-            green.style.top = (parseInt(green.style.top) + (event.layerY - Math.round(event.target.clientHeight/2))) + "px"
+            green.style.top = (parseInt(green.style.top) + (event.layerY - half)) + "px"
         } else {
-            green.style.top = (parseInt(event.target.style.top) + (event.layerY - Math.round(event.target.clientHeight/2))) + "px"
+            green.style.top = (parseInt(event.target.style.top) + (event.layerY - half)) + "px"
         }
+    // the target is the container
     } else {
         green.style.top = event.layerY + "px"
     }
@@ -118,16 +128,9 @@ const moveGreenDragon = (event) => {
 ////// ENEMY FUNCTIONS
 
 const moveEnemy = (dragon) => {
-    let positionX = parseInt(dragon.style.left)
     let positionY = parseInt(dragon.style.top)
-
-    // horizontal movement  
-    if ( positionX < (visor.clientWidth + dragon.clientWidth)) {
-        dragon.style.left = (parseInt(dragon.style.left) + 1) + "px"
-    } else {
-        dragon.remove()
-    }
-
+    let positionX = parseInt(dragon.style.left)
+    
     // vertical movement
     if (positionY > 0 && positionY < visor.clientHeight) {
         if (dragon.classList.contains("isgoingup")) {
@@ -142,11 +145,23 @@ const moveEnemy = (dragon) => {
         dragon.classList.add("isgoingup")
         dragon.style.top = (positionY - 1) + "px"
     }
-}
 
-const sendEnemy = (dragon) => {
-    // move enemy 1px for each 10ms
-    setInterval(() => moveEnemy(dragon), 10)
+    // horizontal movement  
+    if (positionX < visor.clientWidth) {
+        dragon.style.left = (positionX + 1) + "px"
+        // recurrent call
+        setTimeout(() => moveEnemy(dragon), 10)
+        /* He optado por una llamada recurrente con tiempo de espera, ya que si asigno un bucle por 
+        intervalo y lo borro cuando el enemigo cruza el visor, se paran todos los enemigos.*/
+    } else {
+        // decrease the score
+        if (dragon.classList.contains("black")) {
+            updateScore(-10)
+        } else {
+            updateScore(-30)
+        }
+        dragon.remove()
+    }
 }
 
 const alternateEnemy = () => {
@@ -159,23 +174,24 @@ const alternateEnemy = () => {
     }
 }
 
-
-
 ///// FUNCTIONS TO THE MANAGEMENT OF SCORE AND LEVELS
 
 const setIntervalLevel = () => {
     let score = parseInt(points.textContent)
     let interval
     if (score < 100) {
-        interval = 5000
-    } else if (score >= 100 && score < 200){
         interval = 3000
-    } else if (score >= 200 && score < 300){
+    } else if (score >= 100 && score < 200){
         interval = 1000
+    } else if (score >= 200 && score < 300){
+        interval = 500
     }
     return interval
 }
 
+const updateScore = (pts) => {
+    points.textContent = parseInt(points.textContent) + pts
+}
 
 ////////////////////////////// EVENTS ////////////////////////////////
 
@@ -185,8 +201,8 @@ document.addEventListener("DOMContentLoaded", () => {
     green = document.querySelector(".green")
     // read the green dragon style
     stylesheet =  window.getComputedStyle(green)
-    // send enemy for each 3s
-    setInterval(() => sendEnemy(createDragon(alternateEnemy())), setIntervalLevel())
+    // crate enemy for each 3s
+    setInterval(() => moveEnemy(createDragon(alternateEnemy())), setIntervalLevel())
 })
 visor.addEventListener("mousemove", (event) => moveGreenDragon(event))
 visor.addEventListener("click", () => breatheFire(green))
