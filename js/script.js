@@ -1,6 +1,8 @@
 ////////////////////////////// REFERENCES ///////////////////////////////
 const scoreboard = document.getElementById("scoreboard")
-const tryagain = document.getElementById("tryagain")
+const title = document.querySelector(".title")
+const playpanel = document.getElementById("playpanel")
+const tryagainpanel = document.getElementById("tryagainpanel")
 const visor = document.getElementById("visor")
 const container = document.getElementById("container")
 const points = document.getElementById("points")
@@ -77,10 +79,10 @@ const detectImpact = (fire) => {
 
     // detect impact on the green dragon
     if (
-        parseInt(fire.style.top) + 30 > parseInt(green.style.top) &&
-        parseInt(fire.style.top) - 30 < parseInt(green.style.top) &&
-        parseInt(fire.style.left) + 30 > parseInt(stylesheet.left) &&
-        parseInt(fire.style.left) - 30 < parseInt(stylesheet.left)
+        parseInt(fire.style.top) + 40 > parseInt(green.style.top) &&
+        parseInt(fire.style.top) - 40 < parseInt(green.style.top) &&
+        parseInt(fire.style.left) + 40 > parseInt(stylesheet.left) &&
+        parseInt(fire.style.left) - 40 < parseInt(stylesheet.left)
     ) {
         // Update hearts
         updateHearts()
@@ -148,6 +150,7 @@ const createGreenDragon = () => {
     createDragon("green")
     // get the reference of the green dragon
     green = document.querySelector(".green")
+    green.classList.add("green-start")
     // read the green dragon style
     stylesheet = window.getComputedStyle(green)
 }
@@ -234,9 +237,9 @@ const updateHearts = () => {
         // stop the game
         gameOver()
         // display the try again panel
-        visor.classList.add("hide")
-        scoreboard.classList.add("hide")
-        tryagain.classList.add("show")
+        visor.classList.add("hidevisor")
+        scoreboard.classList.add("hidevisor")
+        tryagainpanel.classList.add("show")
     } else {
         hearts.textContent = --currentHearts
     }
@@ -244,22 +247,25 @@ const updateHearts = () => {
 
 ///////////////////////////////// EVENTS /////////////////////////////////////
 
+playpanel.children[0].focus()
 
-document.addEventListener("DOMContentLoaded", () => {
+playpanel.children[1].addEventListener("click", () => {
+    playpanel.classList.add("hideplay")
     createGreenDragon()
+    title.classList.add("title-start")
     startGame()
 })
 
-tryagain.addEventListener("click", () => {
+tryagainpanel.children[1].addEventListener("click", () => {
     startGame()
 })
 
 // Function to start the game
 const startGame = () => {
     // display the game scope
-    visor.classList.remove("hide")
-    scoreboard.classList.remove("hide")
-    tryagain.classList.remove("show")
+    visor.classList.remove("hidevisor")
+    scoreboard.classList.remove("hidevisor")
+    tryagainpanel.classList.remove("show")
 
     // initialize the scoreboard
     hearts.textContent = 3
@@ -288,5 +294,6 @@ const startGame = () => {
 const gameOver = () => {
     clearInterval(launchFireInterval);
     clearInterval(createEnemyInterval);
+    tryagainpanel.lastElementChild.firstElementChild.textContent = points.textContent
     visor.removeEventListener("mousemove", moveGreenDragon);
 };

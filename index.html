@@ -9,13 +9,15 @@
         <title>GREEN DRAGON</title>
     </head>
     <body class="body">
-        
+        <!-- container -->
         <div class="container">
             <header class="header">
                 <img src="assets/images/gametitle.png" alt="title" class="title">
             </header>
             <main>
+                <!-- visor -->
                 <div class="visor" id="visor"></div>
+                <!-- scoreboard -->
                 <div class="scoreboard" id="scoreboard">
                     <p class="scoreboard__name">noefaguero</p>
                     <p class="scoreboard__life"> &#128154; x<span id="hearts"></span></p>
@@ -23,9 +25,16 @@
                 </div>
             </main>
         </di>
-        <div class="tryagain" id="tryagain">
-            <span class="gameover">GAME OVER</span>
-            <button>TRY AGAIN</button>
+        <!-- panel to play -->
+        <div class="playpanel" id="playpanel">
+            <input type="text" class="playpanel__user">
+            <button class="playpanel__btn">PLAY</button>
+        </div>
+        <!-- panel to try again -->
+        <div class="tryagainpanel" id="tryagainpanel">
+            <span class="tryagainpanel__gameover">GAME OVER</span>
+            <button class="tryagainpanel__btn">TRY AGAIN</button>
+            <p>Puntuación: <span></span></p>
         </div>
         <script src="./js/script.js"></script>
     </body>
