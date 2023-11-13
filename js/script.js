@@ -1,3 +1,6 @@
+////////////////////////////// REFERENCES ///////////////////////////////
+const scoreboard = document.getElementById("scoreboard")
+const tryagain = document.getElementById("tryagain")
 const visor = document.getElementById("visor")
 const container = document.getElementById("container")
 const points = document.getElementById("points")
@@ -6,11 +9,15 @@ const hearts = document.getElementById("hearts")
 let green
 // reference of the green dragon stylesheet
 let stylesheet
+// reference of intervals
+let createEnemyInterval
+let launchFireInterval
 
-//////////////////////////// FUNCTIONS //////////////////////////////
+////////////////////////////// FUNCTIONS ///////////////////////////////
 
-////// COMMON FUNCTIONS
+/************************* COMMON FUNCTIONS ***************************/
 
+// Function to create a dragon element with the specified color
 const createDragon = (color) => {
     let dragon = document.createElement("IMG")
     dragon.setAttribute("class", color)
@@ -32,17 +39,21 @@ const createDragon = (color) => {
 }
     
 
-
+// Function to check if a fire element should continue moving
 const moveFire = (fire) => {
     let position = parseInt(fire.style.left)
 
-    if (position > -fire.clientWidth && position < (visor.clientWidth + fire.clientWidth)) {
+    if (
+        position > -fire.clientWidth && 
+        position < (visor.clientWidth + fire.clientWidth)
+    ) {
         return true //move
     } else {
         return false //stop, fire is out of visor
     }
 }
 
+// Function to detect impact of fire on enemies and the green dragon
 const detectImpact = (fire) => {
     /// detect impact on the enemy
     let enemies = Array.from(visor.querySelectorAll(".enemy"))
@@ -71,10 +82,12 @@ const detectImpact = (fire) => {
         parseInt(fire.style.left) + 30 > parseInt(stylesheet.left) &&
         parseInt(fire.style.left) - 30 < parseInt(stylesheet.left)
     ) {
+        // Update hearts
         updateHearts()
     }
 }
 
+// Function to launch fire from a dragon
 const launchFire = (dragon) => {
     // create fire element
     let fire = document.createElement("IMG")
@@ -85,7 +98,7 @@ const launchFire = (dragon) => {
     if (dragon === green) {
         direction = -1
     }
-    // initial position
+    // set initial position
     if (direction == 1) {
         fire.style.top = (parseInt(dragon.style.top) - 10) + "px"
         fire.style.left = (parseInt(dragon.style.left) + 100) + "px"
@@ -95,7 +108,7 @@ const launchFire = (dragon) => {
     }
     visor.append(fire)
 
-    // move fire 1px for each 1ms
+    // move fire 5px for each 1ms
     let fireMovementInterval = setInterval(() => {
         if (moveFire(fire)) {
             let position = parseInt(fire.style.left)
@@ -105,8 +118,9 @@ const launchFire = (dragon) => {
             fire.remove() 
         }
     }, 10)
-  
-     let impactDetectionInterval = setInterval(() => {
+    
+    //  check for impact every 100ms
+    let impactDetectionInterval = setInterval(() => {
         if (moveFire(fire)) {
             detectImpact(fire)
         } else {
@@ -115,11 +129,13 @@ const launchFire = (dragon) => {
     }, 100)
 }
 
-////// GREEN DRAGON FUNCTIONS
+/************************* GREEN DRAGON FUNCTIONS ***************************/
 
+// Function to move the green dragon based on mouse height
 const moveGreenDragon = (event) => {
     if(event.target.tagName === "IMG"){
-        green.style.top = (parseInt(event.target.style.top) + Math.round(event.offsetY - event.target.clientHeight/2)) + "px"
+        green.style.top = (parseInt(event.target.style.top) + 
+        Math.round(event.offsetY - event.target.clientHeight/2)) + "px"
         
     // the target is the container
     } else {
@@ -127,8 +143,19 @@ const moveGreenDragon = (event) => {
     }
 }
 
-////// ENEMY FUNCTIONS
+const createGreenDragon = () => {
+    // create the green dragon
+    createDragon("green")
+    // get the reference of the green dragon
+    green = document.querySelector(".green")
+    // read the green dragon style
+    stylesheet = window.getComputedStyle(green)
+}
 
+
+/****************************** ENEMY FUNCTIONS *****************************/
+
+// Function to move the enemy
 const moveEnemy = (dragon) => {
     let positionY = parseInt(dragon.style.top)
     let positionX = parseInt(dragon.style.left)
@@ -150,27 +177,25 @@ const moveEnemy = (dragon) => {
 
     // horizontal movement  
     if (dragon.classList.contains("killed")) {
-        dragon.remove()
+        setTimeout(() => dragon.remove(), 900)
     } else {
         if (positionX < visor.clientWidth) {
             dragon.style.left = (positionX + 2) + "px"
             // recurrent call
-            requestAnimationFrame(()=>moveEnemy(dragon))
-            /* He optado por una llamada recurrente con tiempo de espera sincronizado con el renderizado del navegador, 
-            ya que si asigno un bucle por intervalo y lo borro cuando el enemigo cruza el visor, se paran todos los enemigos.*/
+            requestAnimationFrame(() => moveEnemy(dragon))
+            /* He optado por una llamada recurrente con tiempo de espera 
+            sincronizado con el renderizado del navegador, ya que si asigno 
+            un bucle por intervalo y lo borro cuando el enemigo cruza el visor, 
+            se paran todos los enemigos.*/
         } else {
-            // decrease the score
-            if (dragon.classList.contains("black")) {
-                updateScore(-10)
-            } else if (dragon.classList.contains("red")) {
-                updateScore(-30)
-            }
+            // decrease the hearts (lives)
+            updateHearts()
             dragon.remove()
         }
     }
 }
 
-
+// Function to determine the type of enemy dragon
 const alternateEnemy = () => {
     // 2 in 5 enemies is a red dragon
     let num = Math.ceil(Math.random()*5)
@@ -181,13 +206,14 @@ const alternateEnemy = () => {
     }
 }
 
-///// FUNCTIONS TO THE MANAGEMENT OF SCORE AND LEVELS
+/************** FUNCTIONS TO THE MANAGEMENT OF SCORE AND LEVELS *************/
 
+// Function to set the interval for enemy dragon appearance
 const setIntervalLevel = () => {
     let score = parseInt(points.textContent)
     let interval
     if (score < 100) {
-        interval = 1500
+        interval = 2000
     } else if (score >= 100 && score < 200){
         interval = 1000
     } else if (score >= 200 && score < 300){
@@ -196,35 +222,71 @@ const setIntervalLevel = () => {
     return interval
 }
 
+// Function to update the score
 const updateScore = (pts) => {
     points.textContent = parseInt(points.textContent) + pts
 }
+// Function to update the hearts (lives)
 const updateHearts = () => {
-    hearts.textContent = parseInt(hearts.textContent) - 1
+    let currentHearts = parseInt(hearts.textContent)
+    if (currentHearts <= 1) {
+        hearts.textContent = 0
+        // stop the game
+        gameOver()
+        // display the try again panel
+        visor.classList.add("hide")
+        scoreboard.classList.add("hide")
+        tryagain.classList.add("show")
+    } else {
+        hearts.textContent = --currentHearts
+    }
 }
 
-////////////////////////////// EVENTS ////////////////////////////////
+///////////////////////////////// EVENTS /////////////////////////////////////
+
 
 document.addEventListener("DOMContentLoaded", () => {
-    
-    createDragon("green")
-    // get the reference of green dragon
-    green = document.querySelector(".green")
-    // read the green dragon style
-    stylesheet =  window.getComputedStyle(green)
+    createGreenDragon()
+    startGame()
+})
 
-    // crate enemy every 1.5s, 1, or 0.5s
-    setInterval(() => {
+tryagain.addEventListener("click", () => {
+    startGame()
+})
+
+// Function to start the game
+const startGame = () => {
+    // display the game scope
+    visor.classList.remove("hide")
+    scoreboard.classList.remove("hide")
+    tryagain.classList.remove("show")
+
+    // initialize the scoreboard
+    hearts.textContent = 3
+    points.textContent = 0
+
+    // create enemy every 2s, 1, or 0.5s
+    createEnemyInterval = setInterval(() => {
         let dragon = createDragon(alternateEnemy())
         moveEnemy(dragon)
     }, setIntervalLevel())
-    
-    // every 2 second red dragon launch fire
-    setInterval(() => {
+
+    // every 2 seconds, red dragons launche fire
+    launchFireInterval = setInterval(() => {
         let reddragons = Array.from(document.querySelectorAll(".red"))
         reddragons.forEach((reddragon) => launchFire(reddragon))
-    }, 2000)
-})
+    }, 2000);
 
-visor.addEventListener("mousemove", (event) => moveGreenDragon(event))
-visor.addEventListener("click", () => launchFire(green))
+    // green dragon movement on mousemove
+    visor.addEventListener("mousemove", moveGreenDragon)
+
+    // launch fire on click
+    visor.addEventListener("click", () => launchFire(green))
+}
+
+// Function to remove event listeners and clear intervals when the game is over
+const gameOver = () => {
+    clearInterval(launchFireInterval);
+    clearInterval(createEnemyInterval);
+    visor.removeEventListener("mousemove", moveGreenDragon);
+};

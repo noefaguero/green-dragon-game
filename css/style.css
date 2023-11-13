@@ -1,9 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Kdam+Thmor+Pro&display=swap');
+
 *{  
     box-sizing: border-box;
     margin: 0;
     color: white;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: 'Kdam Thmor Pro', sans-serif;
 }
+
 .body{
     background: linear-gradient( rgba(18,102,103,1) 0%, rgba(15,19,105,1) 100%);
     background-repeat: no-repeat;
@@ -55,7 +58,26 @@
     overflow: hidden;
     background: linear-gradient(rgba(34,193,195,1) 0%, rgba(35,44,247,1) 100%);
     position: relative;
+    opacity: 1;
+    transition: opacity 2s;
 }
+
+.tryagain{
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 2s;
+}
+
+.gameover{
+    font-size: 30px;
+}
+
 .scoreboard{
     width: 100%;
     display: flex;
@@ -63,6 +85,8 @@
     padding: 0 20px;
     justify-content: space-between;
     font-size: 1.5vw;
+    opacity: 1;
+    transition: opacity 2s;
 }
 .green{
     position: absolute;
@@ -118,3 +142,27 @@
         transform: scaleY(1) translate(-50%, -50%);
     }
 }
+
+.killed{
+    animation-name: fallout;
+    animation-duration: 1s;
+}
+
+@keyframes fallout{
+    from{
+        transform: translate(-50%, -50%);
+    }
+    to{
+        transform: translate(-50%, -50%);
+        top: 120%;
+    }
+}
+
+.hide{
+    opacity: 0;
+}
+
+.show{
+    opacity: 1;
+}
+
