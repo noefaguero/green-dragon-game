@@ -6,9 +6,11 @@
     color: white;
     font-family: 'Kdam Thmor Pro', sans-serif;
 }
+
 html{
     height: 100%; 
 }
+
 .body{
     background: linear-gradient( rgba(18,102,103,1) 0%, rgba(15,19,105,1) 100%);
     background-repeat: no-repeat;
@@ -18,6 +20,7 @@ html{
     justify-content: center;
     align-items: center;
 }
+
 .container{
     max-width: 1440px;
     max-height: 720px;
@@ -27,6 +30,7 @@ html{
     justify-content: center;
     align-items: center;
 }
+
 .title{
     position: relative;
     width: 30vw;
@@ -66,110 +70,7 @@ html{
     opacity: 0;
 }
 
-.playpanel__user{
-    border-radius: 50px;
-    font-size: 25px;
-    color: rgb(254, 254, 254);
-    padding: 10px 15px;
-    margin: 30px;
-    background-color: rgb(44, 44, 44);
-}
-.tryagainpanel, .playpanel{
-    position: absolute;
-    transform: translate(-50%, -50%);
-    left: 50%;
-    top: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px;
-    transition: all 2s;
-}
-
-.tryagainpanel{
-    left: 200%;
-    opacity: 0;
-}
-
-.tryagainpanel__gameover{
-    font-size: 5vw;
-}
-
-.tryagainpanel__score{
-    font-size: 2vw;
-}
-
-.tryagainpanel__btn, 
-.playpanel__btn{
-    border-radius: 50px;
-    font-size: 2vw;
-    color: black;
-    padding: 0.6vw 1vw;
-    margin: 3vw;
-    background-color: rgb(231, 199, 20);
-    border: 0.5vw inset rgb(70, 70, 70);
-}
-
-@media (min-width: 1440px) {
-    .tryagainpanel__btn, 
-    .playpanel__btn,
-    .playpanel__user{
-        font-size: 25px;
-        padding: 10px 15px;
-        margin: 30px;
-       
-    }
-    .tryagainpanel__btn, 
-    .playpanel__btn{
-        border: 5px inset rgb(70, 70, 70);
-    }
-    .tryagainpanel__gameover{
-        font-size: 70px;
-    }
-    .tryagainpanel__score,
-    .scoreboard__name,
-    .scoreboard__life,
-    .scoreboard__score{
-        font-size: 20px;
-    }
-}
-@media (max-width: 750px) {
-    .tryagainpanel__btn, 
-    .playpanel__btn,
-    .playpanel__user{
-    font-size: 15px;
-    padding: 5px 8px;
-    margin: 15px;
-    }
-    .tryagainpanel__btn, 
-    .playpanel__btn{
-        border: 2px inset rgb(70, 70, 70);
-    }
-    .tryagainpanel__gameover{
-        font-size: 30px;
-    }
-    .tryagainpanel__score,
-    .scoreboard__name,
-    .scoreboard__life,
-    .scoreboard__score{
-        font-size: 15px;
-    }
-}
-
-.tryagainpanel__btn:hover, 
-.playpanel__btn:hover{
-    background-color: rgb(231, 161, 20);
-}
-
-.scoreboard{
-    width: 100%;
-    display: flex;
-    margin: 20px 0;
-    padding: 0 20px;
-    justify-content: space-between;
-    font-size: 1.5vw;
-    opacity: 0;
-}
+/* the styles of the game elements */
 .green{
     position: absolute;
     transform: translate(-50%, -50%);
@@ -243,29 +144,6 @@ html{
     }
 }
 
-.hidetry{
-    animation-name: hidetryframes;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
-}
-@keyframes hidetryframes{
-    0%{
-        opacity: 1;
-        left: 50%;
-    }
-    90%{
-        opacity: 0;
-        left: 50%;
-    }
-    100%{
-        opacity: 0;
-        left: 200%;
-    }
-}
-.hideplay{
-    display: none;
-}
-
 .hidevisor{
     animation-name: hidevisorframes;
     animation-duration: 1s;
@@ -281,27 +159,6 @@ html{
     100%{
         opacity: 0;
         left: 200%;
-    }
-}
-
-.showpanel{
-    animation-name: showpanelframes;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
-}
-
-@keyframes showpanelframes{
-     0%{
-        opacity: 0;
-        left: 200%;
-    }
-    10%{
-        opacity: 0;
-        left: 50%;
-    }
-    100%{
-        opacity: 1;
-        left: 50%;
     }
 }
 

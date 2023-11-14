@@ -244,9 +244,9 @@ const updateHearts = () => {
 
 ///////////////////////////////// EVENTS /////////////////////////////////////
 
-playpanel.children[0].focus()
+playpanel.children[1].focus()
 
-playpanel.children[1].addEventListener("click", () => {
+playpanel.children[2].addEventListener("click", () => {
     playpanel.classList.add("hideplay")
     createGreenDragon()
     title.classList.add("title-start")
@@ -255,13 +255,14 @@ playpanel.children[1].addEventListener("click", () => {
 
 tryagainpanel.children[1].addEventListener("click", () => {
     tryagainpanel.classList.remove("showpanel")
-    tryagainpanel.classList.add("hidetry")
+    tryagainpanel.classList.add("hidepanel")
     startGame()
 })
 
 // Function to start the game
 const startGame = () => {
     // display the game scope
+    scoreboard.firstElementChild.textContent = playpanel.children[1].value
     visor.classList.add("showvisor")
     scoreboard.classList.add("showvisor")
 
@@ -290,11 +291,13 @@ const startGame = () => {
 
 // Function to remove event listeners and clear intervals when the game is over
 const gameOver = () => {
+    // clear intervals
     clearInterval(launchFireInterval);
     clearInterval(createEnemyInterval);
-    tryagainpanel.lastElementChild.firstElementChild.textContent = points.textContent
+    // remove event
     visor.removeEventListener("mousemove", moveGreenDragon)
     // display the try again panel
-    tryagainpanel.classList.remove("hidetry")
+    tryagainpanel.lastElementChild.firstElementChild.textContent = points.textContent
+    tryagainpanel.classList.remove("hidepanel")
     tryagainpanel.classList.add("showpanel")
 };
