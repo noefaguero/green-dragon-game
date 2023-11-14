@@ -236,10 +236,7 @@ const updateHearts = () => {
         hearts.textContent = 0
         // stop the game
         gameOver()
-        // display the try again panel
-        visor.classList.add("hidevisor")
-        scoreboard.classList.add("hidevisor")
-        tryagainpanel.classList.add("show")
+        
     } else {
         hearts.textContent = --currentHearts
     }
@@ -257,15 +254,16 @@ playpanel.children[1].addEventListener("click", () => {
 })
 
 tryagainpanel.children[1].addEventListener("click", () => {
+    tryagainpanel.classList.remove("showpanel")
+    tryagainpanel.classList.add("hidetry")
     startGame()
 })
 
 // Function to start the game
 const startGame = () => {
     // display the game scope
-    visor.classList.remove("hidevisor")
-    scoreboard.classList.remove("hidevisor")
-    tryagainpanel.classList.remove("show")
+    visor.classList.add("showvisor")
+    scoreboard.classList.add("showvisor")
 
     // initialize the scoreboard
     hearts.textContent = 3
@@ -295,5 +293,8 @@ const gameOver = () => {
     clearInterval(launchFireInterval);
     clearInterval(createEnemyInterval);
     tryagainpanel.lastElementChild.firstElementChild.textContent = points.textContent
-    visor.removeEventListener("mousemove", moveGreenDragon);
+    visor.removeEventListener("mousemove", moveGreenDragon)
+    // display the try again panel
+    tryagainpanel.classList.remove("hidetry")
+    tryagainpanel.classList.add("showpanel")
 };

@@ -6,20 +6,23 @@
     color: white;
     font-family: 'Kdam Thmor Pro', sans-serif;
 }
-
+html{
+    height: 100%; 
+}
 .body{
     background: linear-gradient( rgba(18,102,103,1) 0%, rgba(15,19,105,1) 100%);
     background-repeat: no-repeat;
     background-size: cover;
-    height: calc(100vh - 20px);
+    height: calc(100vh - 20px); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .container{
-    margin: 0 auto;
     max-width: 1440px;
     max-height: 720px;
     display: flex;
     flex-direction: column;
-    margin: 20px 0;
     gap: 20px;
     justify-content: center;
     align-items: center;
@@ -38,10 +41,10 @@
 
 @keyframes playgame{
     0%{
-        transform: scale(2) translateY(200%);
+        transform: scale(2) translateY(150%);
     }
     30%{
-        transform: scale(2) translateY(200%);
+        transform: scale(2) translateY(150%);
     }
     100%{
         transform: scale(1) translateY(0);
@@ -60,6 +63,7 @@
     overflow: hidden;
     background: linear-gradient(rgba(34,193,195,1) 0%, rgba(35,44,247,1) 100%);
     position: relative;
+    opacity: 0;
 }
 
 .playpanel__user{
@@ -88,16 +92,73 @@
 }
 
 .tryagainpanel__gameover{
-    font-size: 50px;
+    font-size: 5vw;
 }
-.tryagainpanel__btn, .playpanel__btn{
+
+.tryagainpanel__score{
+    font-size: 2vw;
+}
+
+.tryagainpanel__btn, 
+.playpanel__btn{
     border-radius: 50px;
-    font-size: 25px;
+    font-size: 2vw;
     color: black;
-    padding: 10px 15px;
-    margin: 30px;
+    padding: 0.6vw 1vw;
+    margin: 3vw;
     background-color: rgb(231, 199, 20);
-    border: 5px inset rgb(70, 70, 70);
+    border: 0.5vw inset rgb(70, 70, 70);
+}
+
+@media (min-width: 1440px) {
+    .tryagainpanel__btn, 
+    .playpanel__btn,
+    .playpanel__user{
+        font-size: 25px;
+        padding: 10px 15px;
+        margin: 30px;
+       
+    }
+    .tryagainpanel__btn, 
+    .playpanel__btn{
+        border: 5px inset rgb(70, 70, 70);
+    }
+    .tryagainpanel__gameover{
+        font-size: 70px;
+    }
+    .tryagainpanel__score,
+    .scoreboard__name,
+    .scoreboard__life,
+    .scoreboard__score{
+        font-size: 20px;
+    }
+}
+@media (max-width: 750px) {
+    .tryagainpanel__btn, 
+    .playpanel__btn,
+    .playpanel__user{
+    font-size: 15px;
+    padding: 5px 8px;
+    margin: 15px;
+    }
+    .tryagainpanel__btn, 
+    .playpanel__btn{
+        border: 2px inset rgb(70, 70, 70);
+    }
+    .tryagainpanel__gameover{
+        font-size: 30px;
+    }
+    .tryagainpanel__score,
+    .scoreboard__name,
+    .scoreboard__life,
+    .scoreboard__score{
+        font-size: 15px;
+    }
+}
+
+.tryagainpanel__btn:hover, 
+.playpanel__btn:hover{
+    background-color: rgb(231, 161, 20);
 }
 
 .scoreboard{
@@ -107,7 +168,7 @@
     padding: 0 20px;
     justify-content: space-between;
     font-size: 1.5vw;
-    opacity: 1;
+    opacity: 0;
 }
 .green{
     position: absolute;
@@ -167,6 +228,7 @@
 }
 
 .killed{
+    filter: brightness(20%);
     animation-name: fallout;
     animation-duration: 1s;
 }
@@ -181,12 +243,12 @@
     }
 }
 
-.hideplay{
-    animation-name: hideplayframes;
+.hidetry{
+    animation-name: hidetryframes;
     animation-duration: 1s;
     animation-fill-mode: forwards;
 }
-@keyframes hideplayframes{
+@keyframes hidetryframes{
     0%{
         opacity: 1;
         left: 50%;
@@ -199,6 +261,9 @@
         opacity: 0;
         left: 200%;
     }
+}
+.hideplay{
+    display: none;
 }
 
 .hidevisor{
@@ -219,13 +284,13 @@
     }
 }
 
-.show{
-    animation-name: showframes;
+.showpanel{
+    animation-name: showpanelframes;
     animation-duration: 1s;
     animation-fill-mode: forwards;
 }
 
-@keyframes showframes{
+@keyframes showpanelframes{
      0%{
         opacity: 0;
         left: 200%;
@@ -237,5 +302,26 @@
     100%{
         opacity: 1;
         left: 50%;
+    }
+}
+
+.showvisor{
+    animation-name: showvisorframes;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes showvisorframes{
+     0%{
+        opacity: 0;
+        left: 200%;
+    }
+    10%{
+        opacity: 0;
+        left: 0;
+    }
+    100%{
+        opacity: 1;
+        left: 0;
     }
 }
