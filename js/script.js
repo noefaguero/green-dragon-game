@@ -23,7 +23,7 @@ let launchFireInterval
 const createDragon = (color) => {
     let dragon = document.createElement("IMG")
     dragon.setAttribute("class", color)
-    dragon.setAttribute("src", `assets/images/${color}.png`)
+    dragon.setAttribute("src", `assets/images/${color}.gif`)
 
     if(color != "green"){
         // set the initial positions 
@@ -217,10 +217,10 @@ const setIntervalLevel = () => {
     let interval
     if (score < 100) {
         interval = 2000
-    } else if (score >= 100 && score < 200){
-        interval = 1000
-    } else if (score >= 200 && score < 300){
+    } else if (score >= 100 && score < 500){
         interval = 500
+    } else if (score >= 500){
+        interval = 300
     }
     return interval
 }
@@ -270,7 +270,7 @@ const startGame = () => {
     hearts.textContent = 3
     points.textContent = 0
 
-    // create enemy every 2s, 1, or 0.5s
+    // create enemy every 2s, 0.5, or 0.3s
     createEnemyInterval = setInterval(() => {
         let dragon = createDragon(alternateEnemy())
         moveEnemy(dragon)

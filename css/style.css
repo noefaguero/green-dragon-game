@@ -121,7 +121,7 @@ html{
 }
 @keyframes startfire{
     from{
-        transform: scaleY(0.5) translate(-50%, -50%);
+        transform: scaleY(0.2) translate(-50%, -50%);
     }
     to{
         transform: scaleY(1) translate(-50%, -50%);
