@@ -1,11 +1,10 @@
 ======================================================
 |                                                    |
-|					GREEN DRAGON                     |
+|                   GREEN DRAGON                     |
 |                                                    |
 ======================================================
 
-
-					INSTRUCCIONES
+                     INSTRUCCIONES
                 ======================
 
 1. Objetivo:
@@ -23,7 +22,7 @@
 
  
 
-		          REPOSITORIO GITHUB
+		  REPOSITORIO GITHUB
                 ======================
           
     https://github.com/noefaguero/Green-Dragon-Game
